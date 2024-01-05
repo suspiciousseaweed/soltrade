@@ -3,6 +3,9 @@ import requests
 import asyncio
 
 import pandas as pd
+import logging
+
+logging.basicConfig(level=logging.INFO)
 
 from apscheduler.schedulers.background import BackgroundScheduler
 
@@ -68,6 +71,7 @@ def perform_analysis():
         input_amount = round(find_usdc_balance(), 1) - 0.2
         
         if (ema_short > ema_medium or cl.iat[-1] < lower_bb.iat[-1]) and rsi <= 31:
+            logging.info("Condition met: Opening a market position.")
             asyncio.run(perform_swap(input_amount, usdc_mint))
             stoploss = cl.iat[-1] * 0.925
             takeprofit = cl.iat[-1] * 1.25

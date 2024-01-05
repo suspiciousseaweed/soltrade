@@ -71,8 +71,11 @@ async def perform_swap(sent_amount, sent_token_mint):
     try:
         # Creates token exchange and quote
         txn_route = await create_exchange(sent_amount, sent_token_mint)
+        print(txn_route) # This will print the value of txn_route to the console
         quote = txn_route["data"][0]
+        print(quote) # This will print the value of quote to the console
         trans = await create_transaction(quote)
+        print(trans)  # This will print the value of trans to the console
 
         opts = TxOpts(skip_preflight=True, max_retries=3)
         send_transaction(trans["swapTransaction"], opts)
